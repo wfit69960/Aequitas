@@ -8,6 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Æquitas">
 <meta name="theme-color" content="#e8dfd0">
+<link rel="icon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%23e8dfd0'/><text x='90' y='120' font-family='Georgia,serif' font-size='80' text-anchor='middle' fill='%235a4a3a' font-style='italic'>Æ</text></svg>">
 <title>Æquitas — un geste par semaine</title>
 <style>
@@ -556,6 +557,15 @@
   }
   .ornament { animation: breathe 4s ease-in-out infinite; }
 
+
+  .logo {
+    width: 180px;
+    max-width: 80%;
+    margin: 0 auto 12px;
+    display: block;
+    filter: drop-shadow(0 8px 20px rgba(0,0,0,0.12));
+  }
+
   /* responsive */
   @media (max-width: 380px) {
     h1 { font-size: 46px; }
@@ -577,7 +587,7 @@
       </svg>
       <span></span>
     </div>
-    <h1>Æquitas</h1>
+    <img src="logo.png" alt="Æquitas Logo" class="logo">
     <p class="subtitle">un geste · une semaine · un inconnu</p>
   </header>
 
