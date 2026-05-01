@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Æquitas">
+<meta name="theme-color" content="#e8dfd0">
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%23e8dfd0'/><text x='90' y='120' font-family='Georgia,serif' font-size='80' text-anchor='middle' fill='%235a4a3a' font-style='italic'>Æ</text></svg>">
+<title>Æquitas — un geste par semaine</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter+Tight:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --sand: #e8dfd0;
+    --sand-light: #f2ebdd;
+    --sand-deep: #d9cdb6;
+    --ink: #3d342a;
+    --ink-soft: #5a4a3a;
+    --ink-faint: #8a7a68;
+    --sage: #8a9a7a;
+    --sage-deep: #6a7d5a;
+    --terracotta: #c08868;
+    --paper: #faf6ee;
+    --whisper: #efe8d8;
+    --shadow: rgba(90, 74, 58, 0.08);
+  }
+
+  html, body {
+    background: var(--sand);
+    color: var(--ink);
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse at top, var(--sand-light) 0%, transparent 60%),
+      radial-gradient(ellipse at bottom right, var(--whisper) 0%, transparent 50%),
+      var(--sand);
+    background-attachment: fixed;
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: env(safe-area-inset-top);
+  }
+
+  /* grain subtil */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.36 0 0 0 0 0.29 0 0 0 0 0.23 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    z-index: 1;
+  }
+
+  .app {
+    position: relative;
+    z-index: 2;
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 24px 22px 100px;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  /* === EN-TÊTE === */
+  header {
+    text-align: center;
+    padding: 28px 0 36px;
+    position: relative;
+  }
+
+  .ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    opacity: 0.5;
+  }
+  .ornament span {
+    width: 28px;
+    height: 1px;
+    background: var(--ink-soft);
+  }
+  .ornament svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 56px;
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  .subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--ink-soft);
+    margin-top: 16px;
+    letter-spacing: 0.06em;
+    display: inline-block;
+    padding: 6px 18px;
+    background: linear-gradient(90deg, transparent, var(--whisper) 30%, var(--whisper) 70%, transparent);
+    border-radius: 100px;
+  }
+
+  /* === CARTE PRINCIPALE === */
+  .card {
+    background: var(--paper);
+    border-radius: 18px;
+    padding: 32px 26px;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.8) inset,
+      0 20px 60px -20px var(--shadow),
+      0 6px 20px -10px var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--sage) 20%, var(--terracotta) 50%, var(--sage) 80%, transparent);
+    opacity: 0.4;
+  }
+
+  .week-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--ink-soft);
+    text-align: center;
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+    text-transform: lowercase;
+  }
+
+  .date-range {
+    text-align: center;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+    letter-spacing: 0.06em;
+    font-weight: 400;
+  }
+
+  .action-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 1.35;
+    color: var(--ink);
+    text-align: center;
+    padding: 12px 4px 24px;
+    min-height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .action-text.empty {
+    font-style: italic;
+    color: var(--ink-faint);
+    font-size: 19px;
+  }
+
+  /* === BOUTONS === */
+  .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  button {
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 16px 24px;
+    border-radius: 100px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    box-shadow: 0 4px 14px -4px rgba(61, 52, 42, 0.4);
+  }
+  .btn-primary:active { transform: scale(0.98); background: var(--ink-soft); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--ink-soft);
+    padding: 12px 20px;
+    border-radius: 100px;
+    border: 1px solid var(--sand-deep);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+  }
+  .btn-secondary:active { background: var(--whisper); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink-faint);
+    padding: 10px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    text-decoration: underline;
+    text-decoration-color: var(--sand-deep);
+    text-underline-offset: 4px;
+  }
+
+  .btn-back {
+    background: transparent;
+    color: var(--ink-soft);
+    padding: 8px 12px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 4px;
+    align-self: center;
+    border-radius: 100px;
+  }
+  .btn-back svg {
+    width: 14px;
+    height: 14px;
+  }
+  .btn-back:active {
+    background: var(--whisper);
+  }
+
+  /* === ZONE DE NOTE === */
+  .note-zone {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px dashed var(--sand-deep);
+  }
+  .note-zone label {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-faint);
+    margin-bottom: 10px;
+  }
+  textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--sand-deep);
+    background: var(--sand-light);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--ink);
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  textarea:focus { border-color: var(--sage); }
+  textarea::placeholder { color: var(--ink-faint); font-style: italic; }
+
+  /* === ÉTAT ACCOMPLI === */
+  .completed-state {
+    text-align: center;
+    padding: 16px 0 8px;
+  }
+  .completed-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--sage-deep);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 19px;
+    margin-bottom: 4px;
+  }
+  .completed-mark svg { width: 22px; height: 22px; }
+
+  /* === HISTORIQUE === */
+  .history-section {
+    margin-top: 48px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 26px;
+    color: var(--ink);
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .section-sub {
+    text-align: center;
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+    letter-spacing: 0.06em;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    display: inline-block;
+    padding: 5px 16px;
+    background: linear-gradient(90deg, transparent, var(--whisper) 30%, var(--whisper) 70%, transparent);
+    border-radius: 100px;
+  }
+  .section-sub-wrap {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .history-item {
+    background: var(--paper);
+    border-radius: 12px;
+    padding: 16px 18px;
+    box-shadow: 0 2px 8px -4px var(--shadow);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .history-item:active { transform: scale(0.99); }
+  .history-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--sage);
+    flex-shrink: 0;
+  }
+  .history-item.empty .history-dot { background: var(--sand-deep); }
+  .history-info { flex: 1; min-width: 0; }
+  .history-week {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin-bottom: 2px;
+  }
+  .history-preview {
+    font-size: 13px;
+    color: var(--ink-faint);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .history-empty-msg {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 17px;
+    font-weight: 500;
+    padding: 24px;
+    background: var(--paper);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px -4px var(--shadow);
+  }
+
+  /* === MENU OUTILS === */
+  .tools-bar {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 36px;
+    padding: 14px 12px;
+    background: var(--paper);
+    border-radius: 100px;
+    box-shadow: 0 2px 10px -4px var(--shadow);
+  }
+  .tools-bar button {
+    background: none;
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 15px;
+    padding: 8px 10px;
+    border-radius: 100px;
+    flex: 1;
+  }
+  .tools-bar button:active { background: var(--whisper); color: var(--ink); }
+
+  /* === MODAL === */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(61, 52, 42, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 100;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0;
+    animation: fadeIn 0.3s ease;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: var(--paper);
+    border-radius: 24px 24px 0 0;
+    padding: 28px 24px calc(28px + env(safe-area-inset-bottom));
+    width: 100%;
+    max-width: 540px;
+    max-height: 85vh;
+    overflow-y: auto;
+    animation: slideUp 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
+    position: relative;
+  }
+  .modal-handle {
+    width: 40px;
+    height: 4px;
+    background: var(--sand-deep);
+    border-radius: 2px;
+    margin: -12px auto 16px;
+  }
+  .modal h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 28px;
+    color: var(--ink);
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .modal-sub {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin-bottom: 22px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+  }
+  .modal-content { padding-bottom: 8px; }
+  .modal-detail-action {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    line-height: 1.4;
+    color: var(--ink);
+    padding: 16px 0;
+    text-align: center;
+    border-top: 1px dashed var(--sand-deep);
+    border-bottom: 1px dashed var(--sand-deep);
+    margin: 16px 0;
+  }
+  .modal-detail-note {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    padding: 8px 0 16px;
+    white-space: pre-wrap;
+  }
+  .modal-detail-note.empty {
+    color: var(--ink-faint);
+    text-align: center;
+  }
+
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+  .form-group input, .form-group textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--sand-deep);
+    background: var(--sand-light);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    color: var(--ink);
+    outline: none;
+  }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--sage); }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .modal-actions button { flex: 1; }
+
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--ink);
+    color: var(--paper);
+    padding: 12px 22px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  @keyframes breathe {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.8; }
+  }
+  .ornament { animation: breathe 4s ease-in-out infinite; }
+
+  /* responsive */
+  @media (max-width: 380px) {
+    h1 { font-size: 46px; }
+    .action-text { font-size: 22px; }
+    .card { padding: 26px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header>
+    <div class="ornament">
+      <span></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M5 19l3-3M16 8l3-3"/>
+      </svg>
+      <span></span>
+    </div>
+    <h1>Æquitas</h1>
+    <p class="subtitle">un geste · une semaine · un inconnu</p>
+  </header>
+
+  <!-- Carte semaine en cours -->
+  <div class="card" id="currentCard">
+    <div class="week-label" id="weekLabel">semaine en cours</div>
+    <div class="date-range" id="dateRange"></div>
+
+    <div class="action-text empty" id="actionText">
+      Tirez votre geste de la semaine
+    </div>
+
+    <div class="actions" id="actionsArea">
+      <button class="btn-primary" onclick="drawAction()">Tirer un geste</button>
+    </div>
+
+    <div class="note-zone" id="noteZone" style="display:none;">
+      <label>quelques mots, si le cœur vous en dit</label>
+      <textarea id="noteInput" placeholder="ce que ce geste a éveillé en vous…"></textarea>
+    </div>
+  </div>
+
+  <!-- Historique -->
+  <section class="history-section">
+    <h2 class="section-title">les semaines passées</h2>
+    <div class="section-sub-wrap"><p class="section-sub">touchez pour relire</p></div>
+    <div class="history-list" id="historyList"></div>
+  </section>
+
+  <!-- Outils -->
+  <div class="tools-bar">
+    <button onclick="openExport()">exporter</button>
+    <button onclick="openImport()">importer</button>
+    <button onclick="openReset()">effacer</button>
+    <button onclick="openAbout()">à propos</button>
+  </div>
+
+</div>
+
+<!-- Modal détail -->
+<div class="modal-overlay" id="detailModal" onclick="if(event.target===this)closeModal('detailModal')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2 id="detailTitle">Semaine</h2>
+    <p class="modal-sub" id="detailDates"></p>
+    <div class="modal-content">
+      <div class="modal-detail-action" id="detailAction"></div>
+      <div class="modal-detail-note" id="detailNote"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('detailModal')">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal saisie personnelle -->
+<div class="modal-overlay" id="customModal" onclick="if(event.target===this)closeModal('customModal')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>Votre propre geste</h2>
+    <p class="modal-sub">une intention qui vous appartient</p>
+    <div class="form-group">
+      <label>le geste pour cette semaine</label>
+      <textarea id="customActionInput" rows="3" placeholder="ex. offrir un sourire à la caissière fatiguée…"></textarea>
+    </div>
+    <div class="form-group">
+      <label>quelques mots, si le cœur vous en dit</label>
+      <textarea id="customNoteInput" rows="3" placeholder="ce que vous espérez de ce geste, ou ce qu'il représente pour vous…"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('customModal')">Annuler</button>
+      <button class="btn-primary" onclick="saveCustomAction()">Inscrire</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal export -->
+<div class="modal-overlay" id="exportModal" onclick="if(event.target===this)closeModal('exportModal')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>Exporter l'historique</h2>
+    <p class="modal-sub">copiez ces mots, gardez-les en lieu sûr</p>
+    <div class="form-group">
+      <textarea id="exportData" rows="8" readonly></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('exportModal')">Fermer</button>
+      <button class="btn-primary" onclick="copyExport()">Copier</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal import -->
+<div class="modal-overlay" id="importModal" onclick="if(event.target===this)closeModal('importModal')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>Importer un historique</h2>
+    <p class="modal-sub">collez vos données sauvegardées</p>
+    <div class="form-group">
+      <textarea id="importData" rows="8" placeholder="collez ici votre export…"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('importModal')">Annuler</button>
+      <button class="btn-primary" onclick="doImport()">Importer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal à propos -->
+<div class="modal-overlay" id="aboutModal" onclick="if(event.target===this)closeModal('aboutModal')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>Æquitas</h2>
+    <p class="modal-sub">une petite philosophie</p>
+    <div class="modal-content" style="font-family:'Cormorant Garamond',serif; font-size:18px; line-height:1.7; color:var(--ink); padding:0 4px;">
+      <p style="margin-bottom:14px;"><em>Æquitas</em> — l'équité, la justesse, l'égalité de cœur entre les êtres. Un mot latin qui évoque cette balance intime que l'on cherche entre soi et l'autre.</p>
+      <p style="margin-bottom:14px;">Chaque semaine, un geste pour quelqu'un que vous ne connaissez pas. Pas votre famille, pas vos proches — un inconnu, un passant, une caissière, un voisin sans nom.</p>
+      <p style="margin-bottom:14px;">L'idée est simple&nbsp;: réduire la distance entre les humains, un geste à la fois. Lentement. Sans héroïsme.</p>
+      <p style="font-style:italic; text-align:center; margin-top:20px; color:var(--ink-soft);">«&nbsp;Ce que nous faisons à un étranger, nous le faisons à nous-mêmes.&nbsp;»</p>
+    </div>
+    <div class="modal-actions" style="margin-top:24px;">
+      <button class="btn-secondary" onclick="closeModal('aboutModal')">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal action spontanée déjà faite -->
+<div class="modal-overlay" id="spontaneousModal" onclick="if(event.target===this)closeModal('spontaneousModal')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>Un geste déjà accompli</h2>
+    <p class="modal-sub">racontez ce que vous avez fait cette semaine</p>
+    <div class="form-group">
+      <label>le geste que vous avez offert</label>
+      <textarea id="spontaneousActionInput" rows="3" placeholder="ex. j'ai aidé une dame âgée à porter ses sacs jusqu'à sa voiture…"></textarea>
+    </div>
+    <div class="form-group">
+      <label>quelques mots, si le cœur vous en dit</label>
+      <textarea id="spontaneousNoteInput" rows="3" placeholder="ce que ce geste a éveillé en vous…"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('spontaneousModal')">Annuler</button>
+      <button class="btn-primary" onclick="saveSpontaneousAction()">Inscrire</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal reset -->
+<div class="modal-overlay" id="resetModal" onclick="if(event.target===this)closeModal('resetModal')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>Effacer&nbsp;?</h2>
+    <p class="modal-sub">choisissez ce que vous souhaitez oublier</p>
+    <div class="modal-content" style="padding:8px 4px 16px;">
+      <button class="btn-secondary" style="width:100%; margin-bottom:10px; text-align:left; padding:16px 20px;" onclick="resetCurrentNote()">
+        <strong style="display:block; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:17px; color:var(--ink); margin-bottom:2px;">Effacer la note de cette semaine</strong>
+        <span style="font-size:13px; color:var(--ink-faint);">les mots écrits, sans toucher au geste</span>
+      </button>
+      <button class="btn-secondary" style="width:100%; margin-bottom:10px; text-align:left; padding:16px 20px;" onclick="askResetAllNotes()">
+        <strong style="display:block; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:17px; color:var(--ink); margin-bottom:2px;">Effacer toutes les notes</strong>
+        <span style="font-size:13px; color:var(--ink-faint);">conserver l'historique des gestes, oublier les mots</span>
+      </button>
+      <button class="btn-secondary" style="width:100%; text-align:left; padding:16px 20px; border-color:var(--terracotta);" onclick="askResetAll()">
+        <strong style="display:block; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:17px; color:var(--terracotta); margin-bottom:2px;">Tout recommencer</strong>
+        <span style="font-size:13px; color:var(--ink-faint);">effacer toutes les semaines, repartir à zéro</span>
+      </button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('resetModal')" style="flex:1;">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal confirmation reset général -->
+<div class="modal-overlay" id="confirmResetModal" onclick="if(event.target===this)closeModal('confirmResetModal')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2 id="confirmResetTitle">Êtes-vous sûr&nbsp;?</h2>
+    <p class="modal-sub" id="confirmResetSub">cette action est définitive</p>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('confirmResetModal'); pendingResetAction=null;">Annuler</button>
+      <button class="btn-primary" onclick="executeReset()">Confirmer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal confirmation retour au choix -->
+<div class="modal-overlay" id="confirmBackModal" onclick="if(event.target===this)closeModal('confirmBackModal')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>Revenir au choix&nbsp;?</h2>
+    <p class="modal-sub">le geste actuel sera oublié</p>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('confirmBackModal')">Garder celui-ci</button>
+      <button class="btn-primary" onclick="confirmGoBack()">Revenir</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal confirmation re-tirage -->
+<div class="modal-overlay" id="confirmModal" onclick="if(event.target===this)closeModal('confirmModal')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>Tirer un autre geste&nbsp;?</h2>
+    <p class="modal-sub">le précédent sera oublié</p>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('confirmModal')">Garder celui-ci</button>
+      <button class="btn-primary" onclick="confirmReDraw()">Tirer à nouveau</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal confirmation import -->
+<div class="modal-overlay" id="confirmImportModal" onclick="if(event.target===this)closeModal('confirmImportModal')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2>Remplacer l'historique&nbsp;?</h2>
+    <p class="modal-sub">vos semaines actuelles seront effacées</p>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('confirmImportModal'); pendingImport=null;">Annuler</button>
+      <button class="btn-primary" onclick="confirmImport()">Remplacer</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ BANQUE DE GESTES ============
+const ACTIONS = [
+  "Offrir un vrai sourire à la première personne inconnue que vous croiserez aujourd'hui",
+  "Laisser passer quelqu'un devant vous dans la file d'attente, sans rien dire",
+  "Complimenter sincèrement un·e inconnu·e sur un détail vrai (sa veste, son calme, son rire)",
+  "Tenir la porte plus longtemps que nécessaire pour quelqu'un qui arrive",
+  "Demander à la caissière comment se passe sa journée — et écouter vraiment la réponse",
+  "Ramasser un déchet qui n'est pas le vôtre, dans un lieu public",
+  "Laisser un mot anonyme et bienveillant quelque part (livre de bibliothèque, banc, miroir public)",
+  "Donner une pièce ou un repas à quelqu'un dans la rue, et le regarder dans les yeux",
+  "Céder votre place dans les transports, même si on ne vous l'a pas demandée",
+  "Aider un·e inconnu·e à porter quelque chose de lourd",
+  "Remercier nommément quelqu'un dont vous appréciez le travail invisible (éboueur, livreur, agent d'entretien)",
+  "Écouter pendant cinq minutes quelqu'un qui semble seul, sans vouloir résoudre quoi que ce soit",
+  "Offrir un café ou un thé à un voisin que vous ne connaissez pas vraiment",
+  "Laisser un pourboire deux fois plus généreux qu'à l'ordinaire",
+  "Indiquer le chemin à un touriste ou à quelqu'un qui semble perdu, en prenant le temps",
+  "Envoyer un message anonyme bienveillant à un commerçant local sur leur page",
+  "Donner du sang, ou prendre rendez-vous pour le faire",
+  "Apporter quelque chose de chaud ou de frais (selon la saison) à une personne sans abri",
+  "Laisser une plante, un livre ou un objet utile dans un endroit public avec un mot «&nbsp;à offrir&nbsp;»",
+  "Écrire un avis positif et détaillé pour un petit commerce que vous aimez",
+  "Aider quelqu'un à traverser, à monter dans un bus, à descendre des marches",
+  "Sourire à un bébé qui pleure dans un lieu public, pour soulager son parent",
+  "Faire les courses pour un voisin âgé ou malade",
+  "Envoyer une lettre manuscrite anonyme à une maison de retraite",
+  "Préparer un sac avec eau, barres et chaussettes propres, à donner à la première personne dans le besoin",
+  "Demander pardon, en silence ou à voix haute, à un inconnu à qui vous avez peut-être manqué d'attention",
+  "Laisser votre place de parking à quelqu'un qui attendait",
+  "Acheter un café d'avance pour la prochaine personne qui passera commande",
+  "Partager votre parapluie avec un inconnu sous une averse",
+  "Offrir des fleurs à une personne âgée qui semble seule, dans un parc ou un café",
+  "Écouter sans interrompre quelqu'un qui parle de sa journée — vraiment écouter",
+  "Donner un livre que vous aimez à un·e inconnu·e dans le métro ou dans un café",
+  "Aider à monter une poussette dans un escalier, sans qu'on vous demande",
+  "Saluer le gardien, le concierge, le facteur — et leur demander leur prénom",
+  "Faire don d'un vêtement que vous aimez encore (pas seulement ce que vous ne mettez plus)",
+  "Glisser un mot doux dans la poche d'un manteau d'occasion avant de le donner",
+  "Laisser de la nourriture pour les animaux errants ou les oiseaux du quartier",
+  "Apprendre le prénom de quelqu'un que vous croisez souvent sans jamais lui parler",
+  "Proposer votre aide à quelqu'un qui semble en difficulté avec un téléphone, un distributeur, un plan",
+  "Dire merci à un·e chauffeur·e de bus en descendant, même si tout le monde sort par l'autre porte",
+  "Faire un don, même petit, à une association locale que vous découvrez aujourd'hui",
+  "Inviter un·e collègue avec qui vous n'avez jamais déjeuné à partager un repas",
+  "Laisser une note de gratitude au personnel d'un restaurant, sur l'addition",
+  "Offrir un trajet, une course, une corvée à quelqu'un qui n'osera jamais demander",
+  "Envoyer un message à un ancien professeur ou mentor pour le remercier, des années après",
+  "Tenir compagnie à une personne âgée à un arrêt de bus ou dans une salle d'attente",
+  "Acheter un repas supplémentaire et le donner à la prochaine personne qui en aura besoin",
+  "Faire un compliment précis et inattendu à quelqu'un qui semble passer une mauvaise journée",
+  "Laisser de la place sur le trottoir, ralentir le pas, laisser le monde respirer autour de vous",
+  "Pardonner intérieurement, et complètement, à un inconnu qui vous a agacé cette semaine",
+  "Reconnaître l'humanité de quelqu'un dont l'opinion vous heurte — juste reconnaître, sans approuver",
+  "Préparer un repas chaud et le partager avec une personne qui vit dans la rue",
+  "Donner du temps à une association qui aide des inconnus (deux heures suffisent)",
+  "Offrir une couverture, une écharpe, des gants à quelqu'un qui a froid",
+  "Envoyer un colis surprise à une famille dans le besoin, par l'intermédiaire d'une association",
+  "Parrainer pendant un mois quelqu'un qui apprend votre langue",
+  "Demander à un·e inconnu·e d'où vient son prénom, et écouter l'histoire",
+  "Laisser un pot de fleurs ou un dessin sur le pas d'une porte au hasard, sans signature",
+  "Aider quelqu'un à remplir un formulaire qui le dépasse",
+  "Faire la queue à la place d'une personne âgée fatiguée",
+  "Offrir vos points de fidélité ou un bon de réduction à la personne derrière vous",
+  "Laisser dépasser votre voisin de voiture au feu, et lui faire un petit signe"
+];
+
+// ============ ÉTAT ============
+let state = {
+  weeks: {}, // { "2026-W18": { action, note, completed, date, custom } }
+  currentDraw: null
+};
+
+const STORAGE_KEY = 'aequitas_app_v1';
+const OLD_STORAGE_KEY = 'elan_app_v1';
+
+// ============ DATES ============
+function getISOWeek(date) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const weekNum = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  return { year: d.getUTCFullYear(), week: weekNum };
+}
+
+function weekKey(date = new Date()) {
+  const { year, week } = getISOWeek(date);
+  return `${year}-W${String(week).padStart(2, '0')}`;
+}
+
+function weekDates(key) {
+  const [year, w] = key.split('-W').map(Number);
+  const simple = new Date(Date.UTC(year, 0, 1 + (w - 1) * 7));
+  const dow = simple.getUTCDay();
+  const monday = new Date(simple);
+  if (dow <= 4) monday.setUTCDate(simple.getUTCDate() - simple.getUTCDay() + 1);
+  else monday.setUTCDate(simple.getUTCDate() + 8 - simple.getUTCDay());
+  const sunday = new Date(monday);
+  sunday.setUTCDate(monday.getUTCDate() + 6);
+  return { monday, sunday };
+}
+
+function formatDateRange(key) {
+  const { monday, sunday } = weekDates(key);
+  const months = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+  const m1 = monday.getUTCDate() + ' ' + months[monday.getUTCMonth()];
+  const m2 = sunday.getUTCDate() + ' ' + months[sunday.getUTCMonth()];
+  return `${m1} — ${m2} ${sunday.getUTCFullYear()}`;
+}
+
+function weekLabel(key) {
+  const [year, w] = key.split('-W');
+  return `semaine ${parseInt(w)} · ${year}`;
+}
+
+// ============ STOCKAGE ============
+function load() {
+  try {
+    let raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      // migration depuis l'ancien nom Élan
+      raw = localStorage.getItem(OLD_STORAGE_KEY);
+      if (raw) {
+        localStorage.setItem(STORAGE_KEY, raw);
+      }
+    }
+    if (raw) state = JSON.parse(raw);
+    if (!state.weeks) state.weeks = {};
+  } catch(e) { console.warn(e); }
+}
+
+function save() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch(e) { console.warn(e); }
+}
+
+// ============ LOGIQUE ============
+function currentWeek() {
+  return state.weeks[weekKey()] || null;
+}
+
+function drawAction() {
+  const idx = Math.floor(Math.random() * ACTIONS.length);
+  const action = ACTIONS[idx];
+  state.weeks[weekKey()] = {
+    action,
+    note: '',
+    completed: false,
+    date: new Date().toISOString(),
+    custom: false
+  };
+  save();
+  render();
+}
+
+function openCustomAction() {
+  document.getElementById('customActionInput').value = '';
+  document.getElementById('customNoteInput').value = '';
+  document.getElementById('customModal').classList.add('show');
+  setTimeout(() => document.getElementById('customActionInput').focus(), 300);
+}
+
+function openSpontaneousAction() {
+  document.getElementById('spontaneousActionInput').value = '';
+  document.getElementById('spontaneousNoteInput').value = '';
+  document.getElementById('spontaneousModal').classList.add('show');
+  setTimeout(() => document.getElementById('spontaneousActionInput').focus(), 300);
+}
+
+function saveSpontaneousAction() {
+  const text = document.getElementById('spontaneousActionInput').value.trim();
+  const note = document.getElementById('spontaneousNoteInput').value.trim();
+  if (!text) { toast('décrivez votre geste'); return; }
+  state.weeks[weekKey()] = {
+    action: text,
+    note: note,
+    completed: true,
+    date: new Date().toISOString(),
+    completedDate: new Date().toISOString(),
+    custom: true,
+    spontaneous: true
+  };
+  save();
+  closeModal('spontaneousModal');
+  render();
+  toast('mission accomplie ✦');
+}
+
+function saveCustomAction() {
+  const text = document.getElementById('customActionInput').value.trim();
+  const note = document.getElementById('customNoteInput').value.trim();
+  if (!text) { toast('un mot, au moins…'); return; }
+  state.weeks[weekKey()] = {
+    action: text,
+    note: note,
+    completed: false,
+    date: new Date().toISOString(),
+    custom: true
+  };
+  save();
+  closeModal('customModal');
+  render();
+}
+
+function markCompleted() {
+  const week = currentWeek();
+  if (!week) return;
+  const noteEl = document.getElementById('noteInput');
+  if (noteEl) week.note = noteEl.value;
+  week.completed = true;
+  week.completedDate = new Date().toISOString();
+  save();
+  render();
+  toast('mission accomplie ✦');
+}
+
+function reDraw() {
+  document.getElementById('confirmModal').classList.add('show');
+}
+
+function confirmReDraw() {
+  closeModal('confirmModal');
+  drawAction();
+}
+
+function goBackToChoice() {
+  document.getElementById('confirmBackModal').classList.add('show');
+}
+
+function confirmGoBack() {
+  delete state.weeks[weekKey()];
+  save();
+  closeModal('confirmBackModal');
+  render();
+}
+
+function saveNote() {
+  const week = currentWeek();
+  if (!week) return;
+  week.note = document.getElementById('noteInput').value;
+  save();
+}
+
+// ============ RENDU ============
+function render() {
+  const week = currentWeek();
+  const key = weekKey();
+
+  document.getElementById('weekLabel').textContent = weekLabel(key);
+  document.getElementById('dateRange').textContent = formatDateRange(key);
+
+  const actionEl = document.getElementById('actionText');
+  const actionsEl = document.getElementById('actionsArea');
+  const noteZone = document.getElementById('noteZone');
+
+  if (!week) {
+    actionEl.className = 'action-text empty';
+    actionEl.innerHTML = 'Aucun geste choisi pour cette semaine';
+    actionsEl.innerHTML = `
+      <button class="btn-primary" onclick="drawAction()">Tirer un geste</button>
+      <button class="btn-secondary" onclick="openCustomAction()">Inscrire le mien</button>
+      <button class="btn-secondary" onclick="openSpontaneousAction()">J'ai fait ma propre bonne action</button>
+    `;
+    noteZone.style.display = 'none';
+  } else if (week.completed) {
+    actionEl.className = 'action-text';
+    actionEl.innerHTML = '« ' + escapeHtml(week.action) + ' »';
+    actionsEl.innerHTML = `
+      <div class="completed-state">
+        <div class="completed-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 12l5 5L20 6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          accompli avec le cœur
+        </div>
+      </div>
+    `;
+    noteZone.style.display = week.note ? 'block' : 'none';
+    if (week.note) {
+      document.getElementById('noteInput').value = week.note;
+      document.getElementById('noteInput').setAttribute('readonly', 'true');
+    }
+  } else {
+    actionEl.className = 'action-text';
+    actionEl.innerHTML = '« ' + escapeHtml(week.action) + ' »';
+    actionsEl.innerHTML = `
+      <button class="btn-primary" onclick="markCompleted()">Marquer accompli</button>
+      <button class="btn-ghost" onclick="reDraw()">tirer un autre geste</button>
+      <button class="btn-back" onclick="goBackToChoice()" title="revenir au choix">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        revenir au choix
+      </button>
+    `;
+    noteZone.style.display = 'block';
+    document.getElementById('noteInput').value = week.note || '';
+    document.getElementById('noteInput').removeAttribute('readonly');
+    document.getElementById('noteInput').oninput = saveNote;
+  }
+
+  renderHistory();
+}
+
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  const currentKey = weekKey();
+  const keys = Object.keys(state.weeks)
+    .filter(k => k !== currentKey)
+    .sort((a, b) => b.localeCompare(a));
+
+  if (keys.length === 0) {
+    list.innerHTML = '<div class="history-empty-msg">vos semaines apparaîtront ici, doucement</div>';
+    return;
+  }
+
+  list.innerHTML = keys.map(k => {
+    const w = state.weeks[k];
+    const preview = w.action.length > 60 ? w.action.substring(0, 60) + '…' : w.action;
+    return `
+      <div class="history-item ${w.completed ? '' : 'empty'}" onclick="openDetail('${k}')">
+        <div class="history-dot"></div>
+        <div class="history-info">
+          <div class="history-week">${weekLabel(k)}${w.completed ? '' : ' · non accompli'}</div>
+          <div class="history-preview">${escapeHtml(preview)}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openDetail(key) {
+  const w = state.weeks[key];
+  if (!w) return;
+  document.getElementById('detailTitle').textContent = weekLabel(key);
+  document.getElementById('detailDates').textContent = formatDateRange(key);
+  document.getElementById('detailAction').innerHTML = '« ' + escapeHtml(w.action) + ' »';
+  const noteEl = document.getElementById('detailNote');
+  if (w.note && w.note.trim()) {
+    noteEl.className = 'modal-detail-note';
+    noteEl.textContent = w.note;
+  } else {
+    noteEl.className = 'modal-detail-note empty';
+    noteEl.textContent = w.completed ? 'aucune note pour cette semaine' : 'cette semaine n\'a pas été accomplie';
+  }
+  document.getElementById('detailModal').classList.add('show');
+}
+
+// ============ EXPORT / IMPORT ============
+function openExport() {
+  const data = JSON.stringify(state, null, 2);
+  document.getElementById('exportData').value = data;
+  document.getElementById('exportModal').classList.add('show');
+}
+
+function copyExport() {
+  const ta = document.getElementById('exportData');
+  ta.select();
+  ta.setSelectionRange(0, 99999);
+  try {
+    document.execCommand('copy');
+    toast('copié dans le presse-papier');
+  } catch(e) {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(ta.value).then(() => toast('copié'));
+    }
+  }
+}
+
+function openImport() {
+  document.getElementById('importData').value = '';
+  document.getElementById('importModal').classList.add('show');
+}
+
+let pendingImport = null;
+function doImport() {
+  const text = document.getElementById('importData').value.trim();
+  if (!text) { toast('rien à importer'); return; }
+  try {
+    const data = JSON.parse(text);
+    if (!data.weeks || typeof data.weeks !== 'object') throw new Error();
+    pendingImport = data;
+    closeModal('importModal');
+    document.getElementById('confirmImportModal').classList.add('show');
+  } catch(e) {
+    toast('format invalide');
+  }
+}
+
+function confirmImport() {
+  if (!pendingImport) return;
+  state = pendingImport;
+  pendingImport = null;
+  save();
+  closeModal('confirmImportModal');
+  render();
+  toast('historique restauré');
+}
+
+function openAbout() {
+  document.getElementById('aboutModal').classList.add('show');
+}
+
+// ============ RESET ============
+let pendingResetAction = null;
+
+function openReset() {
+  document.getElementById('resetModal').classList.add('show');
+}
+
+function resetCurrentNote() {
+  const week = currentWeek();
+  if (!week) {
+    closeModal('resetModal');
+    toast('aucune note pour cette semaine');
+    return;
+  }
+  if (!week.note || !week.note.trim()) {
+    closeModal('resetModal');
+    toast('la note est déjà vide');
+    return;
+  }
+  week.note = '';
+  save();
+  closeModal('resetModal');
+  render();
+  toast('note effacée');
+}
+
+function askResetAllNotes() {
+  pendingResetAction = 'allNotes';
+  document.getElementById('confirmResetTitle').innerHTML = 'Effacer toutes les notes&nbsp;?';
+  document.getElementById('confirmResetSub').textContent = 'les gestes accomplis seront conservés';
+  closeModal('resetModal');
+  document.getElementById('confirmResetModal').classList.add('show');
+}
+
+function askResetAll() {
+  pendingResetAction = 'all';
+  document.getElementById('confirmResetTitle').innerHTML = 'Tout recommencer&nbsp;?';
+  document.getElementById('confirmResetSub').textContent = 'toutes les semaines seront oubliées';
+  closeModal('resetModal');
+  document.getElementById('confirmResetModal').classList.add('show');
+}
+
+function executeReset() {
+  if (pendingResetAction === 'allNotes') {
+    Object.keys(state.weeks).forEach(k => {
+      state.weeks[k].note = '';
+    });
+    save();
+    closeModal('confirmResetModal');
+    render();
+    toast('notes effacées');
+  } else if (pendingResetAction === 'all') {
+    state = { weeks: {}, currentDraw: null };
+    save();
+    closeModal('confirmResetModal');
+    render();
+    toast('tout recommence ✦');
+  }
+  pendingResetAction = null;
+}
+
+// ============ UTIL ============
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+// ============ INIT ============
+load();
+render();
+</script>
+
+</body>
+</html>
